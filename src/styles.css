@@ -1,0 +1,294 @@
+/* Color palette */
+:root {
+  --white: #ffffff;
+  --dark-gray: #676f6d;
+  --blue-gray: #42476b;
+  --dark-blue: #2d3250;
+  --pale-orange: #f5b17a;
+  --text-dark: #3a3a3a;
+  --text-light: #fff;
+}
+
+/* Base styles */
+body {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background: linear-gradient(120deg, var(--white) 0%, var(--dark-gray) 100%);
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-dark);
+}
+
+nav {
+  background: linear-gradient(90deg, var(--dark-blue) 60%, var(--blue-gray) 100%);
+  padding: 1.2em 2em;
+  display: flex;
+  gap: 2em;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 2px 12px rgba(45, 50, 80, 0.10);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1em;
+  padding: 0.7em 1.3em;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+nav a:hover, nav a.active {
+  background: var(--pale-orange);
+  color: var(--dark-blue);
+}
+
+.container {
+  max-width: 900px;
+  margin: 2.5em auto;
+  background: var(--white);
+  padding: 2em;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(103, 111, 109, 0.13);
+  animation: fadeIn 0.7s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+h2 {
+  color: var(--dark-blue);
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 0.7em;
+}
+
+button, input[type="submit"], .cssbuttons-io-button {
+  background: linear-gradient(90deg, var(--pale-orange) 70%, var(--dark-gray) 100%);
+  color: var(--text-dark);
+  border: none;
+  border-radius: 8px;
+  padding: 0.7em 1.5em;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1em;
+}
+
+button:hover, input[type="submit"]:hover, .cssbuttons-io-button:hover {
+  background: linear-gradient(90deg, var(--blue-gray) 70%, var(--pale-orange) 100%);
+  color: var(--text-light);
+}
+
+input, textarea, select {
+  padding: 0.6em;
+  border: 1px solid var(--pale-orange);
+  border-radius: 8px;
+  margin-bottom: 1em;
+  width: 100%;
+  font-size: 1em;
+  background: var(--white);
+  transition: border 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border: 1.5px solid var(--dark-blue);
+  outline: none;
+}
+
+.notifications-list {
+  list-style: none;
+  padding: 0;
+}
+
+.notifications-list li {
+  background: linear-gradient(90deg, var(--dark-gray) 80%, var(--white) 100%);
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(103, 111, 109, 0.07);
+  font-size: 1.1em;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.notifications-list li:hover {
+  background: linear-gradient(90deg, var(--pale-orange) 80%, var(--white) 100%);
+}
+
+.notifications-list .icon {
+  font-size: 1.5em;
+  margin-right: 1em;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--white);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pale-orange);
+  border-radius: 8px;
+}
+
+/* Animated Button */
+.cssbuttons-io-button {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-right: 3.3em;
+  box-shadow: inset 0 0 1.6em -0.6em var(--pale-orange);
+  overflow: hidden;
+  height: 2.8em;
+}
+
+.cssbuttons-io-button .icon {
+  background: var(--white);
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 0.7em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em var(--pale-orange);
+  right: 0.3em;
+  transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+  width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: var(--pale-orange);
+}
+
+.cssbuttons-io-button:hover .icon svg {
+  transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+  transform: scale(0.95);
+}
+
+/* Download Button */
+.download-button {
+  position: relative;
+  border-width: 0;
+  color: var(--text-light);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--pale-orange);
+  box-shadow: 0 2px 8px rgba(245, 177, 122, 0.10);
+  transition: box-shadow 0.3s;
+}
+
+.download-button .docs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 8px;
+  z-index: 1;
+  background-color: var(--dark-blue);
+  border: solid 1px var(--pale-orange);
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.download-button:hover {
+  box-shadow:
+    0 8px 32px rgba(245, 177, 122, 0.18),
+    0 2px 8px rgba(103, 111, 109, 0.13);
+}
+
+.download {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin: 0 auto;
+  z-index: -1;
+  border-radius: 8px;
+  transform: translateY(0%);
+  background-color: var(--blue-gray);
+  border: solid 1px var(--blue-gray);
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.download-button:hover .download {
+  transform: translateY(100%);
+}
+
+.download svg polyline,
+.download svg line {
+  animation: docs 1s infinite;
+}
+
+@keyframes docs {
+  0% { transform: translateY(0%);}
+  50% { transform: translateY(-15%);}
+  100% { transform: translateY(0%);}
+}
+
+/* Room actions container */
+.room-actions {
+  display: flex;
+  gap: 1em;
+  margin-top: 2em;
+  flex-wrap: wrap;
+}
+
+/* Visible name section */
+.room-visible-name {
+  margin-top: 2em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.room-visible-name label {
+  font-weight: 500;
+  color: var(--dark-blue);
+  margin-bottom: 0.3em;
+}
+
+.room-visible-name input[type="text"] {
+  padding: 0.6em;
+  border: 1.5px solid var(--pale-orange);
+  border-radius: 8px;
+  font-size: 1em;
+  background: var(--white);
+  color: var(--text-dark);
+  transition: border 0.2s;
+}
+
+.room-visible-name input[type="text"]:focus {
+  border-color: var(--dark-blue);
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 1em; border-radius: 12px; }
+  nav { flex-direction: column; gap: 1em; padding: 1em; }
+  nav a { font-size: 1em; padding: 0.5em 1em; }
+  h2 { font-size: 1.3em; }
+}

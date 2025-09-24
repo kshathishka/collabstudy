@@ -1,0 +1,41 @@
+<h2>Study Rooms</h2>
+<ul>
+  <li>Room A</li>
+  <li>Room B</li>
+  <li>Room C</li>
+</ul>
+
+<!-- Meet options -->
+<div style="margin-top:2em;">
+  <button class="cssbuttons-io-button">
+    Create Meet
+    <span class="icon">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+        <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </button>
+  <button class="cssbuttons-io-button" style="margin-left:1em;">
+    Join Meet
+    <span class="icon">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </button>
+</div>
+
+<!-- Edit visible name -->
+<div style="margin-top:2em;">
+  <label for="visibleName">Your visible name:</label>
+  <input type="text" id="visibleName" [(ngModel)]="visibleName" placeholder="Enter your name" />
+  <button class="cssbuttons-io-button" style="margin-left:1em;" (click)="saveName()">
+    Save Name
+    <span class="icon">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path d="M5 10l4 4 6-8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </button>
+</div>
