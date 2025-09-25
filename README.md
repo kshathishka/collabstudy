@@ -1,6 +1,6 @@
 # CollabStudy - Collaborative Study Platform
 
-A modern, collaborative study platform built with Angular and Node.js, featuring real-time chat, note sharing, session scheduling, and room management. Designed with Google Classroom-inspired dark theme for a professional and comfortable study experience.
+A modern, full-stack collaborative study platform built with Angular and Node.js, featuring real-time chat, note sharing, session scheduling, and room management. Designed with Google Classroom-inspired dark theme for a professional and comfortable study experience.
 
 ## 🚀 Features
 
@@ -19,6 +19,9 @@ A modern, collaborative study platform built with Angular and Node.js, featuring
 - **MongoDB Integration**: Robust database management with Mongoose
 - **File Upload**: Multer integration for note and material uploads
 - **User Authentication**: JWT-based secure authentication system
+- **Email Integration**: Nodemailer for notifications and verification
+- **Rate Limiting**: Protection against abuse and spam
+- **Logging**: Comprehensive logging with Winston
 
 ## 🛠️ Tech Stack
 
@@ -35,6 +38,8 @@ A modern, collaborative study platform built with Angular and Node.js, featuring
 - **Database**: MongoDB with Mongoose ODM
 - **Real-time**: Socket.IO for live features
 - **File Upload**: Multer middleware
+- **Authentication**: JWT with bcrypt
+- **Email**: Nodemailer
 - **Development**: Nodemon for auto-restart
 
 ## 📦 Installation & Setup
@@ -42,72 +47,129 @@ A modern, collaborative study platform built with Angular and Node.js, featuring
 ### Prerequisites
 - Node.js (v18 or higher)
 - MongoDB (v6.0 or higher)
-- Angular CLI
+- Angular CLI (`npm install -g @angular/cli`)
 - Git
 
-### Frontend Setup
+### Full Stack Setup
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/collabstudy.git
+   git clone <repository-url>
    cd collabstudy
    ```
 
-2. **Install dependencies**:
+2. **Install Frontend Dependencies**:
    ```bash
    npm install
    ```
 
-3. **Environment Configuration**:
+3. **Install Backend Dependencies**:
+   ```bash
+   cd collabstudy-backend
+   npm install
+   cd ..
+   ```
+
+### Environment Configuration
+
+#### Frontend Environment
+1. **Create frontend environment file**:
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` with your configuration:
+   
+2. **Edit `.env` with your configuration**:
    ```env
    API_BASE_URL=http://localhost:5000/api
    SOCKET_URL=http://localhost:5000
    NODE_ENV=development
    ```
 
-4. **Start the development server**:
+#### Backend Environment
+1. **Create backend environment file**:
+   ```bash
+   cd collabstudy-backend
+   cp .env.example .env
+   cd ..
+   ```
+   
+2. **Edit `collabstudy-backend/.env`** with your configuration:
+   ```env
+   # Database
+   MONGODB_URI=mongodb://localhost:27017/collabstudy
+   
+   # Server
+   PORT=5000
+   NODE_ENV=development
+   
+   # JWT Authentication
+   JWT_SECRET=your_very_secure_jwt_secret_here
+   JWT_EXPIRE=7d
+   
+   # CORS
+   CORS_ORIGIN=http://localhost:4200
+   
+   # File Upload
+   MAX_FILE_SIZE=10485760
+   UPLOAD_PATH=./uploads
+   
+   # Email (Optional - for notifications)
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_app_password
+   ```
+
+### Running the Application
+
+#### Option 1: Run Both Servers Separately
+
+1. **Start Backend Server**:
+   ```bash
+   cd collabstudy-backend
+   npm run dev
+   ```
+   Backend API available at `http://localhost:5000`
+
+2. **Start Frontend Server** (in new terminal):
    ```bash
    ng serve
    # or
    npm start
    ```
-   Navigate to `http://localhost:4200`
+   Frontend available at `http://localhost:4200`
 
-### Backend Setup
-1. **Navigate to backend directory**:
+#### Option 2: Run Concurrently (Recommended)
+1. **Install concurrently** (if not already installed):
    ```bash
-   cd backend
+   npm install -g concurrently
    ```
 
-2. **Install backend dependencies**:
+2. **Run both servers**:
    ```bash
-   npm install
+   # From root directory
+   concurrently "cd collabstudy-backend && npm run dev" "ng serve"
    ```
 
-3. **Backend Environment Configuration**:
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `backend/.env`:
-   ```env
-   MONGODB_URI=mongodb://localhost:27017/collabstudy
-   PORT=5000
-   JWT_SECRET=your_secure_jwt_secret
-   CORS_ORIGIN=http://localhost:4200
-   ```
+### Database Setup
 
-4. **Start MongoDB and run backend**:
+1. **Install MongoDB**:
+   - Download and install MongoDB from [mongodb.com](https://www.mongodb.com/try/download/community)
+   - Or use MongoDB Atlas (cloud database)
+
+2. **Start MongoDB**:
    ```bash
-   # Start MongoDB (varies by OS)
-   mongod
+   # Windows
+   net start MongoDB
    
-   # Start backend server
-   npm run dev
+   # macOS/Linux
+   sudo systemctl start mongod
+   # or
+   brew services start mongodb-community
    ```
-   Backend API available at `http://localhost:5000`
+
+3. **Verify connection**:
+   - MongoDB should be running on `mongodb://localhost:27017`
+   - Database `collabstudy` will be created automatically
 
 ## 🎨 Dark Theme Features
 
@@ -120,82 +182,212 @@ A modern, collaborative study platform built with Angular and Node.js, featuring
 ## 📁 Project Structure
 
 ```
-collabstudy/
-├── src/app/                  # Angular application
-│   ├── chat/                 # Chat functionality
-│   ├── notes/                # Notes management
-│   ├── rooms/                # Study rooms
-│   ├── sessions/             # Session calendar
-│   └── notifications/        # Notifications
-├── backend/                  # Node.js backend
-│   ├── routes/               # API routes
-│   ├── models/              # Database models
-│   └── server.js            # Express server
-├── .env.example             # Environment template
-└── README.md               # This file
-```
-   ```bash
-   ng serve
-   ```
-   Navigate to `http://localhost:4200/`
-
-5. **Build for Production**
-   ```bash
-   ng build --configuration production
-   ```
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── layout/                 # Main layout component with navigation
-│   ├── rooms/                  # Study rooms module
-│   ├── sessions/               # Session management module
-│   ├── notes/                  # Notes sharing module
-│   ├── chat/                   # Chat system module
-│   └── notifications/          # Notification system
-├── environments/               # Environment configurations
-└── styles.css                 # Global dark theme styles
+collabstudy/                     # Root directory (Frontend)
+├── src/app/                     # Angular application
+│   ├── chat/                    # Real-time chat functionality
+│   │   ├── chat-room/          # Chat room component
+│   │   └── chat.module.ts      # Chat module
+│   ├── notes/                   # Notes management
+│   │   ├── note-list/          # Note listing component
+│   │   ├── note-upload/        # File upload component
+│   │   └── notes.module.ts     # Notes module
+│   ├── rooms/                   # Study rooms management
+│   │   ├── room-create/        # Room creation
+│   │   ├── room-detail/        # Room details view
+│   │   ├── room-list/          # Room listing
+│   │   └── rooms.module.ts     # Rooms module
+│   ├── sessions/                # Session calendar
+│   │   ├── session-calendar/   # Calendar component
+│   │   ├── session-detail/     # Session details
+│   │   └── sessions.module.ts  # Sessions module
+│   └── notifications/           # Notifications system
+│       ├── notification-list/  # Notification listing
+│       └── notifications.module.ts
+├── collabstudy-backend/         # Backend directory
+│   ├── models/                 # MongoDB models
+│   ├── routes/                 # API routes
+│   ├── middleware/             # Express middleware
+│   ├── utils/                  # Utility functions
+│   ├── uploads/                # File upload directory
+│   ├── server.js               # Express server entry point
+│   ├── package.json            # Backend dependencies
+│   └── .env.example            # Backend environment template
+├── .env.example                # Frontend environment template
+├── .gitignore                  # Git ignore rules
+└── README.md                   # Project documentation
 ```
 
-## Environment Variables
+## 🔧 Development Workflow
 
-The application uses the following environment variables (see `.env.example`):
+### Frontend Development
+```bash
+# Start development server with hot reload
+ng serve
 
-- `API_BASE_URL` - Backend API endpoint
-- `DB_*` - Database configuration
-- `JWT_SECRET` - JWT authentication secret
-- `GOOGLE_CLIENT_ID` - Google OAuth configuration
-- Feature flags for enabling/disabling modules
+# Run tests
+ng test
 
-## Dark Theme
+# Build for production
+ng build --configuration production
 
-The application features a comprehensive dark theme using CSS variables:
+# Lint code
+ng lint
+```
 
-- Primary color: `#bb86fc` (Material Design Purple)
-- Secondary color: `#03dac6` (Material Design Teal)
-- Background: `#121212` (Material Design Dark Surface)
-- All Material components are themed for dark mode
+### Backend Development
+```bash
+# Navigate to backend
+cd collabstudy-backend
 
-## Development Guidelines
+# Start development server with nodemon
+npm run dev
+
+# Run tests (if available)
+npm test
+
+# Start production server
+npm start
+```
+
+### Full Stack Development
+```bash
+# Install concurrently for running both servers
+npm install -g concurrently
+
+# Run both frontend and backend
+concurrently "cd collabstudy-backend && npm run dev" "ng serve"
+```
+
+## 🌐 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
+- `POST /api/auth/logout` - User logout
+
+### Rooms
+- `GET /api/rooms` - Get all rooms
+- `POST /api/rooms` - Create new room
+- `GET /api/rooms/:id` - Get room details
+- `PUT /api/rooms/:id` - Update room
+- `DELETE /api/rooms/:id` - Delete room
+- `POST /api/rooms/:id/join` - Join room
+
+### Sessions
+- `GET /api/sessions` - Get user sessions
+- `POST /api/sessions` - Create session
+- `GET /api/sessions/:id` - Get session details
+- `PUT /api/sessions/:id` - Update session
+- `DELETE /api/sessions/:id` - Delete session
+
+### Notes
+- `GET /api/notes/:roomId` - Get room notes
+- `POST /api/notes` - Upload note
+- `DELETE /api/notes/:id` - Delete note
+
+### Chat
+- Socket.IO events for real-time messaging
+- `join-room` - Join chat room
+- `send-message` - Send message
+- `receive-message` - Receive message
+
+## ⚙️ Environment Configuration
+
+### Frontend (.env)
+```env
+API_BASE_URL=http://localhost:5000/api
+SOCKET_URL=http://localhost:5000
+NODE_ENV=development
+```
+
+### Backend (collabstudy-backend/.env)
+```env
+# Database
+MONGODB_URI=mongodb://localhost:27017/collabstudy
+
+# Server
+PORT=5000
+NODE_ENV=development
+
+# JWT
+JWT_SECRET=your_secure_secret
+JWT_EXPIRE=7d
+
+# CORS
+CORS_ORIGIN=http://localhost:4200
+
+# File Upload
+MAX_FILE_SIZE=10485760
+UPLOAD_PATH=./uploads
+
+# Email (Optional)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+```
+
+## 🎨 Dark Theme Customization
+
+The application uses CSS variables for theming:
+
+```css
+:root {
+  --primary-color: #bb86fc;
+  --secondary-color: #4caf50;
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+}
+```
+
+## 📚 Development Guidelines
 
 1. **Component Structure**: Use standalone components with Angular 20+
 2. **Styling**: Use CSS variables from the global theme
 3. **Icons**: Use Material Icons for consistency
 4. **Responsive**: Design mobile-first with Material breakpoints
+5. **TypeScript**: Strict type checking enabled
+6. **Environment**: Separate configurations for dev/prod
 
-## Contributing
+## 🚀 Deployment
+
+### Frontend Deployment
+```bash
+# Build for production
+ng build --configuration production
+
+# Deploy dist/ folder to your hosting service
+```
+
+### Backend Deployment
+```bash
+# Set production environment variables
+# Start production server
+npm start
+```
+
+### Docker Deployment (Optional)
+```dockerfile
+# Dockerfile example for containerized deployment
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 5000
+CMD ["npm", "start"]
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License.
 
 ## Support
 
