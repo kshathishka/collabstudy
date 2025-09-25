@@ -1,1 +1,92 @@
-<p>room-list works!</p>
+<div class="room-list-container">
+  <div class="header">
+    <h1>Study Rooms</h1>
+    <button mat-fab extended color="primary" routerLink="/rooms/create" class="create-fab">
+      <mat-icon>add</mat-icon>
+      Create Room
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading study rooms...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon color="warn" class="error-icon">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadRooms()">Try Again</button>
+  </div>
+
+  <!-- Rooms Grid -->
+  <div *ngIf="!loading && !error" class="rooms-grid">
+    <mat-card *ngFor="let room of rooms" class="room-card" [class.private-room]="room.isPrivate">
+      <mat-card-header>
+        <div mat-card-avatar class="room-avatar">
+          <mat-icon>{{ room.isPrivate ? 'lock' : 'public' }}</mat-icon>
+        </div>
+        <mat-card-title>{{ room.name }}</mat-card-title>
+        <mat-card-subtitle>{{ room.subject }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="room-description">{{ room.description }}</p>
+        
+        <div class="room-stats">
+          <div class="stat-item">
+            <mat-icon class="stat-icon">people</mat-icon>
+            <span>{{ room.members.length }}/{{ room.capacity }}</span>
+            <div class="capacity-bar">
+              <div class="capacity-fill" 
+                   [style.width.%]="(room.members.length / room.capacity) * 100"
+                   [class]="getCapacityStatus(room)"></div>
+            </div>
+          </div>
+          
+          <div class="stat-item">
+            <mat-icon class="stat-icon">person</mat-icon>
+            <span>{{ room.creator.name }}</span>
+          </div>
+        </div>
+
+        <div class="tags-container" *ngIf="room.tags.length > 0">
+          <mat-chip-set>
+            <mat-chip *ngFor="let tag of room.tags">{{ tag }}</mat-chip>
+          </mat-chip-set>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button 
+                color="primary" 
+                (click)="joinRoom(room)"
+                [disabled]="room.members.length >= room.capacity"
+                class="join-btn">
+          <mat-icon>{{ room.members.length >= room.capacity ? 'block' : 'login' }}</mat-icon>
+          {{ room.members.length >= room.capacity ? 'Full' : 'Join Room' }}
+        </button>
+        
+        <button mat-button 
+                color="accent" 
+                [routerLink]="['/rooms', room._id]"
+                class="details-btn">
+          <mat-icon>visibility</mat-icon>
+          View Details
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Empty State -->
+    <div *ngIf="rooms.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">meeting_room</mat-icon>
+      <h2>No Study Rooms Yet</h2>
+      <p>Be the first to create a study room and start collaborating!</p>
+      <button mat-raised-button color="primary" routerLink="/rooms/create">
+        <mat-icon>add</mat-icon>
+        Create First Room
+      </button>
+    </div>
+  </div>
+</div>

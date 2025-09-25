@@ -1,1 +1,150 @@
-<p>note-upload works!</p>
+<div class="note-upload-container">
+  <!-- Header -->
+  <div class="upload-header">
+    <div class="header-content">
+      <h2>📂 Notes Sharing</h2>
+      <p>Upload and share study materials with your team</p>
+    </div>
+  </div>
+
+  <!-- Upload Zone -->
+  <div class="upload-section">
+    <mat-card class="upload-card">
+      <div 
+        class="drop-zone"
+        [class.drag-over]="isDragOver"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()">
+        
+        <div class="drop-zone-content">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+          <h3>Drag & Drop Files Here</h3>
+          <p>Or click to browse files</p>
+          <div class="file-types">
+            <mat-chip-set>
+              <mat-chip>PDF</mat-chip>
+              <mat-chip>Images</mat-chip>
+              <mat-chip>Documents</mat-chip>
+              <mat-chip>Text Files</mat-chip>
+            </mat-chip-set>
+          </div>
+          <p class="size-limit">Maximum file size: 10MB</p>
+        </div>
+
+        <input 
+          #fileInput
+          type="file"
+          multiple
+          accept=".pdf,.jpg,.jpeg,.png,.gif,.txt,.doc,.docx"
+          (change)="onFileSelected($event)"
+          style="display: none;">
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Files List -->
+  <div class="files-section">
+    <div class="section-header">
+      <h3>
+        Uploaded Files
+        <mat-chip class="files-count">{{ uploadedFiles.length }} file(s)</mat-chip>
+      </h3>
+    </div>
+
+    <div class="files-grid" *ngIf="uploadedFiles.length > 0; else noFiles">
+      <mat-card 
+        *ngFor="let file of uploadedFiles; trackBy: trackFile"
+        class="file-card"
+        [class.uploading]="file.isUploading">
+        
+        <mat-card-header class="file-header">
+          <div mat-card-avatar [class]="getFileIconClass(file.type)">
+            <mat-icon>{{ getFileIcon(file.type) }}</mat-icon>
+          </div>
+          
+          <mat-card-title class="file-name">{{ file.name }}</mat-card-title>
+          <mat-card-subtitle class="file-meta">
+            {{ formatFileSize(file.size) }} • {{ file.uploadDate | date:'mediumDate' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <!-- Upload Progress -->
+        <div class="upload-progress" *ngIf="file.isUploading">
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="file.uploadProgress || 0">
+          </mat-progress-bar>
+          <span class="progress-text">{{ file.uploadProgress | number:'1.0-0' }}%</span>
+        </div>
+
+        <mat-card-content class="file-content" *ngIf="!file.isUploading">
+          <div class="file-info">
+            <div class="info-row">
+              <mat-icon>person</mat-icon>
+              <span>Uploaded by {{ file.uploadedBy }}</span>
+            </div>
+            
+            <div class="description" *ngIf="file.description">
+              {{ file.description }}
+            </div>
+          </div>
+
+          <div class="file-tags" *ngIf="file.tags && file.tags.length > 0">
+            <mat-chip-set>
+              <mat-chip *ngFor="let tag of file.tags" class="tag-chip">
+                {{ tag }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="file-actions" *ngIf="!file.isUploading">
+          <button 
+            mat-button 
+            color="primary"
+            (click)="downloadFile(file)">
+            <mat-icon>download</mat-icon>
+            Download
+          </button>
+          
+          <button 
+            mat-button>
+            <mat-icon>share</mat-icon>
+            Share
+          </button>
+          
+          <button 
+            mat-icon-button
+            color="warn"
+            (click)="deleteFile(file)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- No Files State -->
+    <ng-template #noFiles>
+      <div class="no-files">
+        <mat-card class="empty-state-card">
+          <mat-card-content>
+            <div class="empty-state">
+              <mat-icon class="empty-icon">folder_open</mat-icon>
+              <h3>No files uploaded yet</h3>
+              <p>Start sharing study materials by uploading your first file.</p>
+              <button 
+                mat-raised-button 
+                color="primary" 
+                (click)="fileInput.click()">
+                <mat-icon>upload</mat-icon>
+                Upload First File
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </div>
+</div>

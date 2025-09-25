@@ -1,1 +1,137 @@
-<p>chat-room works!</p>
+<div class="chat-room-container">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="room-info">
+      <div class="room-icon">
+        <mat-icon>forum</mat-icon>
+      </div>
+      <div class="room-details">
+        <h2>💬 {{ roomName }}</h2>
+        <p>{{ onlineUsers.length }} members online</p>
+      </div>
+    </div>
+    
+    <div class="chat-actions">
+      <button mat-icon-button>
+        <mat-icon>videocam</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>call</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-content">
+    <!-- Online Users Panel -->
+    <div class="users-panel">
+      <mat-card class="users-card">
+        <mat-card-header>
+          <mat-card-title>Online Users</mat-card-title>
+          <mat-card-subtitle>{{ onlineUsers.length }} members</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="users-list">
+            <div 
+              *ngFor="let user of onlineUsers; trackBy: trackUser"
+              class="user-item"
+              [class]="getStatusClass(user.status)">
+              
+              <div class="user-avatar">
+                {{ user.avatar }}
+                <mat-icon class="status-indicator" [class]="getStatusClass(user.status)">
+                  {{ getStatusIcon(user.status) }}
+                </mat-icon>
+              </div>
+              
+              <div class="user-info">
+                <span class="user-name">{{ user.name }}</span>
+                <span class="user-status">{{ user.status }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Messages Panel -->
+    <div class="messages-panel">
+      <mat-card class="messages-card">
+        <!-- Messages Container -->
+        <div class="messages-container" #messagesContainer>
+          <div 
+            *ngFor="let message of messages; trackBy: trackMessage"
+            class="message-wrapper"
+            [class.own-message]="message.isOwn"
+            [class.system-message]="message.messageType === 'system'">
+            
+            <!-- System Message -->
+            <div *ngIf="message.messageType === 'system'" class="system-message-content">
+              <mat-icon>info</mat-icon>
+              <span>{{ message.content }}</span>
+              <small>{{ message.timestamp | date:'shortTime' }}</small>
+            </div>
+
+            <!-- Regular Message -->
+            <div *ngIf="message.messageType !== 'system'" class="message-bubble">
+              <div class="message-avatar" *ngIf="!message.isOwn">
+                {{ message.senderAvatar }}
+              </div>
+              
+              <div class="message-content">
+                <div class="message-header" *ngIf="!message.isOwn">
+                  <span class="sender-name">{{ message.sender }}</span>
+                  <span class="message-time">{{ message.timestamp | date:'shortTime' }}</span>
+                </div>
+                
+                <div class="message-text">
+                  {{ message.content }}
+                </div>
+                
+                <div class="message-time own-time" *ngIf="message.isOwn">
+                  {{ message.timestamp | date:'shortTime' }}
+                </div>
+              </div>
+              
+              <div class="message-avatar own-avatar" *ngIf="message.isOwn">
+                {{ message.senderAvatar }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message Input -->
+        <div class="message-input-container">
+          <mat-divider></mat-divider>
+          <div class="input-wrapper">
+            <button mat-icon-button class="attachment-btn">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+            
+            <mat-form-field appearance="outline" class="message-input-field">
+              <input 
+                matInput
+                #messageInput
+                placeholder="Type your message..."
+                [(ngModel)]="newMessage"
+                (keydown)="onKeyPress($event)"
+                autocomplete="off">
+            </mat-form-field>
+            
+            <button 
+              mat-fab 
+              color="primary" 
+              class="send-button"
+              [disabled]="!newMessage.trim()"
+              (click)="sendMessage()">
+              <mat-icon>send</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

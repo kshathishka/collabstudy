@@ -1,1 +1,141 @@
-<p>session-calendar works!</p>
+<div class="session-calendar-container">
+  <!-- Header -->
+  <div class="calendar-header">
+    <div class="header-content">
+      <h2>📅 Session Scheduling</h2>
+      <p>View and manage your collaborative study sessions</p>
+    </div>
+    <button mat-raised-button color="primary" class="add-session-btn">
+      <mat-icon>add</mat-icon>
+      New Session
+    </button>
+  </div>
+
+  <!-- Calendar Section -->
+  <div class="calendar-section">
+    <mat-card class="calendar-card">
+      <mat-card-header>
+        <mat-card-title>Calendar</mat-card-title>
+        <mat-card-subtitle>Select a date to view sessions</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-calendar
+          [selected]="selectedDate"
+          [dateClass]="dateHasSession"
+          (selectedChange)="onDateSelected($event)">
+        </mat-calendar>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Sessions Section -->
+  <div class="sessions-section">
+    <div class="sessions-header">
+      <h3>
+        Sessions for {{ selectedDate | date:'fullDate' }}
+        <mat-chip-set>
+          <mat-chip [class.has-sessions]="getSessionsForDate(selectedDate).length > 0">
+            {{ getSessionsForDate(selectedDate).length }} session(s)
+          </mat-chip>
+        </mat-chip-set>
+      </h3>
+    </div>
+
+    <div class="sessions-grid" *ngIf="getSessionsForDate(selectedDate).length > 0; else noSessions">
+      <mat-card 
+        *ngFor="let session of getSessionsForDate(selectedDate); trackBy: trackSession"
+        class="session-card"
+        [class]="'status-' + session.status">
+        
+        <mat-card-header>
+          <div mat-card-avatar [class]="getStatusIconClass(session.status)">
+            <mat-icon>{{ getStatusIcon(session.status) }}</mat-icon>
+          </div>
+          <mat-card-title>{{ session.title }}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-chip class="status-chip" [class]="'status-' + session.status">
+              {{ getStatusText(session.status) }}
+            </mat-chip>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="session-info">
+            <div class="info-row">
+              <mat-icon>schedule</mat-icon>
+              <span class="time">
+                {{ session.startTime | date:'shortTime' }} - {{ session.endTime | date:'shortTime' }}
+              </span>
+            </div>
+            
+            <div class="info-row">
+              <mat-icon>meeting_room</mat-icon>
+              <span>{{ session.roomName }}</span>
+            </div>
+            
+            <div class="info-row">
+              <mat-icon>person</mat-icon>
+              <span>Host: {{ session.hostName }}</span>
+            </div>
+            
+            <div class="info-row">
+              <mat-icon [matBadge]="session.attendeesCount" matBadgeColor="accent">group</mat-icon>
+              <span>{{ session.attendeesCount }} attendees</span>
+            </div>
+          </div>
+          
+          <div class="description">
+            {{ session.description }}
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="session-actions">
+          <button 
+            mat-button 
+            color="primary"
+            *ngIf="session.status === 'ongoing'">
+            <mat-icon>video_call</mat-icon>
+            Join Session
+          </button>
+          
+          <button 
+            mat-button 
+            *ngIf="session.status === 'scheduled'">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+          
+          <button 
+            mat-button 
+            *ngIf="session.status === 'completed'">
+            <mat-icon>history</mat-icon>
+            View Summary
+          </button>
+          
+          <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- No Sessions State -->
+    <ng-template #noSessions>
+      <div class="no-sessions">
+        <mat-card class="empty-state-card">
+          <mat-card-content>
+            <div class="empty-state">
+              <mat-icon class="empty-icon">event_busy</mat-icon>
+              <h3>No sessions scheduled</h3>
+              <p>There are no study sessions scheduled for {{ selectedDate | date:'mediumDate' }}.</p>
+              <button mat-raised-button color="primary" class="create-session-btn">
+                <mat-icon>add</mat-icon>
+                Create New Session
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,13 +1,19 @@
 {
-  "name": "client",
-  "version": "0.0.0",
+  "name": "collabstudy",
+  "version": "1.0.0",
+  "description": "A collaborative study platform with dark theme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "dev": "ng serve --open",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:client": "node dist/client/server/server.mjs"
+    "test:watch": "ng test --watch",
+    "lint": "ng lint",
+    "serve:ssr:client": "node dist/client/server/server.mjs",
+    "setup": "npm install && cp .env.example .env"
   },
   "prettier": {
     "printWidth": 100,
@@ -23,16 +29,19 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.2.5",
     "@angular/common": "^20.3.0",
     "@angular/compiler": "^20.3.0",
     "@angular/core": "^20.3.0",
     "@angular/forms": "^20.3.0",
+    "@angular/material": "^20.2.5",
     "@angular/platform-browser": "^20.3.0",
     "@angular/platform-server": "^20.3.0",
     "@angular/router": "^20.3.0",
     "@angular/ssr": "^20.3.2",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
