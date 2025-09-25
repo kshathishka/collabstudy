@@ -1,53 +1,139 @@
 # CollabStudy - Collaborative Study Platform
 
-A modern, dark-themed collaborative study platform built with Angular and Material Design, featuring Google Classroom-inspired UI.
+A modern, collaborative study platform built with Angular and Node.js, featuring real-time chat, note sharing, session scheduling, and room management. Designed with Google Classroom-inspired dark theme for a professional and comfortable study experience.
 
-## Features
+## 🚀 Features
 
-- 🎨 Dark theme by default with Material Design components
-- 👥 Study rooms management
-- 📅 Session scheduling and calendar
-- 📝 Notes sharing and collaboration
-- 💬 Real-time chat system
-- 🔔 Notification system
-- 📱 Responsive design for all devices
+### Frontend (Angular)
+- **Modern Dark Theme**: Google Classroom-inspired design with Material Design
+- **Session Calendar**: Interactive calendar for scheduling and viewing study sessions
+- **Room Management**: Create and join study rooms with different subjects
+- **Real-time Chat**: Live messaging within study rooms
+- **Note Sharing**: Upload and share study materials with room members
+- **Notifications**: Stay updated with room activities and session reminders
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 
-## Tech Stack
+### Backend (Node.js + Express)
+- **RESTful API**: Complete backend API for all application features
+- **Real-time Communication**: Socket.IO integration for live features
+- **MongoDB Integration**: Robust database management with Mongoose
+- **File Upload**: Multer integration for note and material uploads
+- **User Authentication**: JWT-based secure authentication system
 
-- **Frontend**: Angular 20+, Angular Material, TypeScript
-- **Styling**: CSS Variables, Material Design Dark Theme
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: Angular 20.3.x with standalone components
+- **UI Library**: Angular Material with custom dark theme
+- **Styling**: CSS3 with CSS Variables for theming
 - **Icons**: Material Icons
 - **Build**: Angular CLI with ESBuild
 
-## Prerequisites
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose ODM
+- **Real-time**: Socket.IO for live features
+- **File Upload**: Multer middleware
+- **Development**: Nodemon for auto-restart
 
+## 📦 Installation & Setup
+
+### Prerequisites
 - Node.js (v18 or higher)
-- npm (v9 or higher)
+- MongoDB (v6.0 or higher)
 - Angular CLI
+- Git
 
-## Setup Instructions
-
-1. **Clone the repository**
+### Frontend Setup
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/yourusername/collabstudy.git
    cd collabstudy
    ```
 
-2. **Install dependencies**
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-3. **Environment Configuration**
+3. **Environment Configuration**:
    ```bash
-   # Copy the environment template
    cp .env.example .env
-   
-   # Edit .env file with your configuration
-   # Update API endpoints, database credentials, etc.
+   ```
+   Edit `.env` with your configuration:
+   ```env
+   API_BASE_URL=http://localhost:5000/api
+   SOCKET_URL=http://localhost:5000
+   NODE_ENV=development
    ```
 
-4. **Development Server**
+4. **Start the development server**:
+   ```bash
+   ng serve
+   # or
+   npm start
+   ```
+   Navigate to `http://localhost:4200`
+
+### Backend Setup
+1. **Navigate to backend directory**:
+   ```bash
+   cd backend
+   ```
+
+2. **Install backend dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Backend Environment Configuration**:
+   ```bash
+   cp .env.example .env
+   ```
+   Edit `backend/.env`:
+   ```env
+   MONGODB_URI=mongodb://localhost:27017/collabstudy
+   PORT=5000
+   JWT_SECRET=your_secure_jwt_secret
+   CORS_ORIGIN=http://localhost:4200
+   ```
+
+4. **Start MongoDB and run backend**:
+   ```bash
+   # Start MongoDB (varies by OS)
+   mongod
+   
+   # Start backend server
+   npm run dev
+   ```
+   Backend API available at `http://localhost:5000`
+
+## 🎨 Dark Theme Features
+
+- **Google Classroom Inspired Design**: Professional and clean interface
+- **Material Design 3**: Latest design system with dark theme support
+- **Custom Color Palette**: Purple (#bb86fc) and teal (#03dac6) accents
+- **Consistent Theming**: CSS variables for easy theme customization
+- **Accessibility**: High contrast ratios and proper color combinations
+
+## 📁 Project Structure
+
+```
+collabstudy/
+├── src/app/                  # Angular application
+│   ├── chat/                 # Chat functionality
+│   ├── notes/                # Notes management
+│   ├── rooms/                # Study rooms
+│   ├── sessions/             # Session calendar
+│   └── notifications/        # Notifications
+├── backend/                  # Node.js backend
+│   ├── routes/               # API routes
+│   ├── models/              # Database models
+│   └── server.js            # Express server
+├── .env.example             # Environment template
+└── README.md               # This file
+```
    ```bash
    ng serve
    ```
